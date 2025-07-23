@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster with Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login/Register Section -->
+    <div id="authSection">
+        <h2 id="formTitle">Welcome Back</h2>
+        <div class="auth-subtitle" id="formSubtitle">Sign in to your account</div>
+        
+        <div class="input-group">
+            <input type="text" id="username" required>
+            <label for="username">Username</label>
+        </div>
+        
+        <div class="input-group">
+            <input type="password" id="password" required>
+            <label for="password">Password</label>
+        </div>
+        
+        <button class="auth-button" onclick="handleAuth()" id="authButton">Sign In</button>
+        <div class="auth-link" onclick="toggleAuthMode()">Don't have an account? Register</div>
+    </div>
+
+    <!-- TaskMaster Section -->
+    <div id="taskMasterSection" class="hidden">
+        <button class="logout-button" onclick="logout()">Logout</button>
+        
+        <div class="welcome-message" id="welcomeMessage">
+            Welcome back! Ready to manage your tasks?
+        </div>
+
+        <div class="container">
+            <div class="header">
+                <h1>TaskMaster</h1>
+                <p>Intelligent Task Scheduler</p>
+            </div>
+
+            <div class="main-content">
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="openAddTaskModal()">➕ Add Task</button>
+                    <button class="btn btn-danger" onclick="openRemoveTaskModal()">🗑️ Remove Task</button>
+                    <button class="btn btn-success" onclick="executeNextTask()">▶️ Execute Next</button>
+                    <button class="btn btn-warning" onclick="undoLastTask()">↩️ Undo Last</button>
+                    <button class="btn btn-info" onclick="toggleSortView()">🔧 Sort Tasks</button>
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalTasks">0</div>
+                        <div class="stat-label">Total Tasks</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="highPriorityTasks">0</div>
+                        <div class="stat-label">High Priority</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="urgentTasks">0</div>
+                        <div class="stat-label">Due Soon</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="completedTasks">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+
+                <div class="sort-controls" id="sortControls" style="display: none;">
+                    <h3>Sort Tasks By:</h3>
+                    <div class="sort-options">
+                        <div class="sort-option active" onclick="setSortOrder('deadline')">📅 Deadline</div>
+                        <div class="sort-option" onclick="setSortOrder('priority')">⭐ Priority</div>
+                        <div class="sort-option" onclick="setSortOrder('time')">⏱️ Time Required</div>
+                    </div>
+                </div>
+
+                <div class="task-list" id="taskList">
+                    <div class="empty-state">
+                        <h3>No tasks yet</h3>
+                        <p>Add your first task to get started!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="addTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addTaskModal')">&times;</span>
+            <h2>Add New Task</h2>
+            <form id="addTaskForm">
+                <div class="form-group">
+                    <label for="taskName">Task Name:</label>
+                    <input type="text" id="taskName" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskDeadline">Deadline (days from today):</label>
+                    <input type="number" id="taskDeadline" min="0" max="365" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskPriority">Priority:</label>
+                    <select id="taskPriority" required>
+                        <option value="">Select Priority</option>
+                        <option value="1">1 - Lowest</option>
+                        <option value="2">2 - Very Low</option>
+                        <option value="3">3 - Low</option>
+                        <option value="4">4 - Below Normal</option>
+                        <option value="5">5 - Normal</option>
+                        <option value="6">6 - Above Normal</option>
+                        <option value="7">7 - High</option>
+                        <option value="8">8 - Very High</option>
+                        <option value="9">9 - Highest</option>
+                        <option value="10">10 - Critical</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskTime">Time Required (hours):</label>
+                    <input type="number" id="taskTime" min="0.1" step="0.1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Task</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Remove Task Modal -->
+    <div id="removeTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('removeTaskModal')">&times;</span>
+            <h2>Remove Task</h2>
+            <form id="removeTaskForm">
+                <div class="form-group">
+                    <label for="removeTaskName">Task Name:</label>
+                    <input type="text" id="removeTaskName" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Remove Task</button>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
